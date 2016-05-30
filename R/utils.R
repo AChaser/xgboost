@@ -238,7 +238,7 @@ xgb.cv.mknfold <- function(dall, nfold, param, stratified, folds) {
       if (exists('objective', where=param) && is.character(param$objective)) {
         # If 'objective' provided in params, assume that y is a classification label
         # unless objective is reg:linear
-        if (param[['objective']] != 'reg:linear') y <- factor(y)
+        if (!(param[['objective']] %in% c('reg:linear', 'reg:mape'))) y <- factor(y)
       } else {
         # If no 'objective' given in params, it means that user either wants to use
         # the default 'reg:linear' objective or has provided a custom obj function.
