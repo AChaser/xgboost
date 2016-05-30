@@ -49,7 +49,7 @@ struct LossType {
    * \brief check if label range is valid
    */
   inline bool CheckLabel(float x) const {
-    if (loss_type != kLinearSquare) {
+    if (loss_type != kLinearSquare && loss_type != kLinearMape) {
       return x >= 0.0f && x <= 1.0f;
     }
     return true;
@@ -58,7 +58,7 @@ struct LossType {
    * \brief error message displayed when check label fail
    */
   inline const char * CheckLabelErrorMsg(void) const {
-    if (loss_type != kLinearSquare) {
+    if (loss_type != kLinearSquare && loss_type != kLinearMape) {
       return "label must be in [0,1] for logistic regression";
     } else {
       return "";
