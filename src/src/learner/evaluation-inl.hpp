@@ -80,6 +80,15 @@ struct EvalRMSE : public EvalEWiseBase<EvalRMSE> {
   }
 };
 
+struct EvalMAPE : public EvalEWiseBase<EvalMAPE> {
+  virtual const char *Name(void) const {
+    return "mape";
+  }
+  inline float EvalRow(float label, float pred) const {
+    return label>0.0f ? (std::abs(label - pred)/label) : 0.0f;
+  }
+};
+
 /*! \brief logloss */
 struct EvalLogLoss : public EvalEWiseBase<EvalLogLoss> {
   virtual const char *Name(void) const {
