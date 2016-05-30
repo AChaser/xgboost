@@ -84,7 +84,7 @@ struct EvalMAPE : public EvalEWiseBase<EvalMAPE> {
   virtual const char *Name(void) const {
     return "mape";
   }
-  inline float EvalRow(float label, float pred) const {
+  inline static float EvalRow(float label, float pred) {
     return label>0.0f ? (std::abs(label - pred)/label) : 0.0f;
   }
 };
