@@ -29,6 +29,7 @@ struct LossType {
   static const int kLogisticNeglik = 1;
   static const int kLogisticClassify = 2;
   static const int kLogisticRaw = 3;
+  static const int kLinearMape = 4;
   /*!
    * \brief transform the linear sum to prediction
    * \param x linear sum of boosting ensemble
@@ -37,6 +38,7 @@ struct LossType {
   inline float PredTransform(float x) const {
     switch (loss_type) {
       case kLogisticRaw:
+      case kLinearMape:
       case kLinearSquare: return x;
       case kLogisticClassify:
       case kLogisticNeglik: return 1.0f / (1.0f + std::exp(-x));
@@ -71,6 +73,7 @@ struct LossType {
   inline float FirstOrderGradient(float predt, float label) const {
     switch (loss_type) {
       case kLinearSquare: return predt - label;
+      case kLinearMape: return label > 0.0f ? (predt > label ? (predt-label)/label : (label-predt)/label) : 0.0f ;
       case kLogisticRaw: predt = 1.0f / (1.0f + std::exp(-predt));
       case kLogisticClassify:
       case kLogisticNeglik: return predt - label;
@@ -88,6 +91,7 @@ struct LossType {
     const float eps = 1e-16f;
     switch (loss_type) {
       case kLinearSquare: return 1.0f;
+      case kLinearMape: return label > 0.0f ? 1.0f/label : 0.0f;
       case kLogisticRaw: predt = 1.0f / (1.0f + std::exp(-predt));
       case kLogisticClassify:
       case kLogisticNeglik: return std::max(predt * (1.0f - predt), eps);
@@ -111,6 +115,7 @@ struct LossType {
   inline const char *DefaultEvalMetric(void) const {
     if (loss_type == kLogisticClassify) return "error";
     if (loss_type == kLogisticRaw) return "auc";
+    if (loss_type == kLinearMape) return "mape";
     return "rmse";
   }
 };
