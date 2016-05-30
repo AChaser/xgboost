@@ -73,7 +73,7 @@ struct LossType {
   inline float FirstOrderGradient(float predt, float label) const {
     switch (loss_type) {
       case kLinearSquare: return predt - label;
-      case kLinearMape: return label > 0.0f ? (predt > label ? (predt-label)/label : (label-predt)/label) : 0.0f ;
+      case kLinearMape: return label > 0.0f ? (predt > label ? 1.0f/label : -1.0f/label) : 0.0f ;
       case kLogisticRaw: predt = 1.0f / (1.0f + std::exp(-predt));
       case kLogisticClassify:
       case kLogisticNeglik: return predt - label;
