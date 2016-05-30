@@ -170,7 +170,7 @@ xgb.train <- function(params=list(), data, nrounds, watchlist = list(),
       stop('Please set maximize to note whether the model is maximizing the evaluation or not.')
     if (is.null(maximize))
     {
-      if (params$eval_metric %in% c('rmse','logloss','error','merror','mlogloss')) {
+      if (params$eval_metric %in% c('rmse','mape','logloss','error','merror','mlogloss')) {
         maximize = FALSE
       } else {
         maximize = TRUE
